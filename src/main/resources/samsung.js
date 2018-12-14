@@ -106,7 +106,7 @@ var SamsungPay = {
         var j = a.substr(a.indexOf("?") + 1, a.length);
         var c = k;
         var b = j.split("&");
-        var l = $("<form/>", {
+        var l = Payline.jQuery("<form/>", {
             action: c,
             method: "post"
         }).appendTo("body");
@@ -114,7 +114,7 @@ var SamsungPay = {
             var d = b[e].split("=");
             var h = d[0],
                 g = d[1];
-            $("<input/>", {
+            Payline.jQuery("<input/>", {
                 type: "hidden",
                 name: h,
                 value: g

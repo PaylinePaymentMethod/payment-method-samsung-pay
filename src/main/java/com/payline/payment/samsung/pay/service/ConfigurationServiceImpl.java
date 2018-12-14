@@ -94,10 +94,10 @@ public class ConfigurationServiceImpl extends AbstractConfigurationHttpService i
         parameters.add(networkMastercard);
 
         final NetworkListBoxParameter networkAmex = new NetworkListBoxParameter();
-        networkMastercard.setKey(AvailableNetwork.AMEX.getKey());
-        networkMastercard.setLabel(i18n.getMessage(CONTRACT_CONFIG_AMEX_PROPERTY_LABEL, locale));
-        networkMastercard.setDescription(i18n.getMessage(CONTRACT_CONFIG_AMEX_PROPERTY_DESCRIPTION, locale));
-        networkMastercard.setNetwork(AvailableNetwork.AMEX);
+        networkAmex.setKey(AvailableNetwork.AMEX.getKey());
+        networkAmex.setLabel(i18n.getMessage(CONTRACT_CONFIG_AMEX_PROPERTY_LABEL, locale));
+        networkAmex.setDescription(i18n.getMessage(CONTRACT_CONFIG_AMEX_PROPERTY_DESCRIPTION, locale));
+        networkAmex.setNetwork(AvailableNetwork.AMEX);
 
         parameters.add(networkAmex);
 
