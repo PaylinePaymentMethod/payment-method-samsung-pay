@@ -19,7 +19,7 @@ public class PaymentCredentialGetRequest {
     /**
      * Constructor
      */
-    private PaymentCredentialGetRequest(String id, String serviceId) {
+    public PaymentCredentialGetRequest(String id, String serviceId) {
         this.id = id;
         this.serviceId = serviceId;
     }

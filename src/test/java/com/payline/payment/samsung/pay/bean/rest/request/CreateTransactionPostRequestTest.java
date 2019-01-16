@@ -107,7 +107,7 @@ public class CreateTransactionPostRequestTest {
 
     @Test
     public void buildBody() throws InvalidRequestException {
-        String bodyToCompare = "{\"callback\":\"https://succesurl.com/\",\"paymentDetails\":{\"service\":{\"id\":\"db1294c3c8bc42fe9ce762\"},\"orderNumber\":\"0001\",\"protocol\":{\"type\":\"3DS\",\"version\":\"80\"},\"amount\":{\"currency\":\"USD\",\"total\":1},\"merchant\":{\"name\":\"aMerchant\"}}}";
+        String bodyToCompare = "{\"callback\":\"http://default.callback.url\",\"paymentDetails\":{\"service\":{\"id\":\"db1294c3c8bc42fe9ce762\"},\"orderNumber\":\"0001\",\"protocol\":{\"type\":\"3DS\",\"version\":\"80\"},\"amount\":{\"currency\":\"USD\",\"total\":1},\"merchant\":{\"name\":\"aMerchant\"}}}";
 
         ContractParametersCheckRequest request = Utils.createContractParametersCheckRequest("aMerchant");
         CreateTransactionPostRequest createTransactionPostRequest = new CreateTransactionPostRequest.Builder().fromCheckRequest(request);

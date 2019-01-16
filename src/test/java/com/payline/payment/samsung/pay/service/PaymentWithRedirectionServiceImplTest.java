@@ -21,13 +21,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.io.IOException;
 import java.net.URISyntaxException;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyMap;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.spy;
 
 /**
@@ -58,7 +54,7 @@ public class PaymentWithRedirectionServiceImplTest {
     }
 
     @Test
-    public void processResponse() throws IOException, DecryptException {
+    public void processResponse() throws DecryptException {
         String jsonContent = "{" +
                 "    'resultCode': '0'," +
                 "    'resultMessage': 'SUCCESS'," +
@@ -72,19 +68,16 @@ public class PaymentWithRedirectionServiceImplTest {
 
         String goodDecrypt = "{'amount':'100','cryptogram':'AgAAAAAABQrqUtnic6MLQAAAAAA=','currency_code':'USD','eci_indicator':'07','tokenPanExpiration':'1225','utc':'1542290658225','tokenPAN':'4895370013341927'}";
         Mockito.when(jweDecrypt.getDecryptedData(anyString(),any())).thenReturn(goodDecrypt);
-        doReturn("2").when(service).getPartnerTransactionId();
 
         service.setRedirectionPaymentRequest(Utils.createRedirectionPaymentRequestBuilder().build());
 
         PaymentResponse paymentResponse = service.processResponse(response);
         Assert.assertNotNull(paymentResponse);
         Assert.assertEquals(PaymentResponseDoPayment.class, paymentResponse.getClass());
-        PaymentResponseDoPayment responseDoPayment = (PaymentResponseDoPayment) paymentResponse;
-        Assert.assertEquals("2", responseDoPayment.getPartnerTransactionId());
     }
 
     @Test
-    public void processResponseWithException() throws IOException, DecryptException {
+    public void processResponseWithException() throws DecryptException {
         String jsonContent = "{" +
                 "    'resultCode': '0'," +
                 "    'resultMessage': 'SUCCESS'," +
@@ -99,7 +92,6 @@ public class PaymentWithRedirectionServiceImplTest {
         service.setRedirectionPaymentRequest(Utils.createRedirectionPaymentRequestBuilder().build());
 
         Mockito.when(jweDecrypt.getDecryptedData(anyString(),any())).thenThrow(DecryptException.class);
-        doReturn("2").when(service).getPartnerTransactionId();
 
         PaymentResponse paymentResponse = service.processResponse(response);
         Assert.assertNotNull(paymentResponse);

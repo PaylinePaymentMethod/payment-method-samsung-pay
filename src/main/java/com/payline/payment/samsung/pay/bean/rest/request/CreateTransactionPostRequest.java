@@ -55,7 +55,8 @@ public class CreateTransactionPostRequest extends AbstractJsonRequest {
             this.checkInputRequest(paylineRequest);
 
             //
-            return new CreateTransactionPostRequest(paylineRequest.getEnvironment().getRedirectionReturnURL(),
+            return new CreateTransactionPostRequest(
+                    DEFAULT_CALLBACK,
                     this.getPaymentDetailsFromPaymentRequest(paylineRequest));
         }
 

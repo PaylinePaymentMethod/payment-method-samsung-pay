@@ -29,6 +29,7 @@ public class SamsungPayConstants {
     public static final String CONTRACT_CONFIG_AMEX_PROPERTY_DESCRIPTION = "contractConfiguration.amex.description";
 
     public static final String DEFAULT_XREQUESTID = "123456789";
+    public static final String DEFAULT_CALLBACK = "http://default.callback.url";
 
     // Data used in PaymentFormConfigurationServiceImpl
     public static final boolean NOFIELDFORM_DISPLAY_PAYMENT_BUTTON = true;
@@ -36,6 +37,12 @@ public class SamsungPayConstants {
     public static final String NOFIELDFORM_BUTTON_TEXT = "form.button.samsungPay.text";
     public static final String NOFIELDFORM_BUTTON_DESCRIPTION = "form.button.samsungPay.description";
 
+    // Data used in PaymentService
+    public static final String EMPTY_STRING ="";
+    public static final String SCRIPT_BEFORE_IMPORT ="var $ = Payline.jQuery;";
+    public static final String NOT_USED_BUT_MANDATORY ="notUsedButMandatory";
+    public static final String PAYMENTDATA_TOKENDATA ="PAYMENTDATA_TOKENDATA";
+    public static final String REFERENCE_ID ="REFERENCE_ID";
 
     // Data used in https calls
     public static final String CONTENT_TYPE = "Content-Type";
