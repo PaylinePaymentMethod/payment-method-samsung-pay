@@ -90,12 +90,45 @@ public class PaymentWithRedirectionServiceImplTest {
     }
 
     @Test
-    public void processResponseWithoutECI() throws DecryptException {
+    public void processResponseWithoutECIVISA() throws DecryptException {
         String jsonContent = "{" +
                 "    'resultCode': '0'," +
                 "    'resultMessage': 'SUCCESS'," +
                 "    'method': '3DS'," +
                 "    'card_brand': 'VI'," +
+                "    'card_last4digits': '9406'," +
+                "    '3DS': { 'type': 'S', 'version': '100', 'data': 'longStringWithEncryptedData' }," +
+                "    'wallet_dm_id': 'f2hvqp-QkfN2_0='" +
+                "}";
+        StringResponse response = Utils.createStringResponse(jsonContent, 200);
+
+        String goodDecrypt = "{'amount':'100','cryptogram':'AgAAAAAABQrqUtnic6MLQAAAAAA=','currency_code':'USD','tokenPanExpiration':'1225','utc':'1542290658225','tokenPAN':'4895370013341927'}";
+        Mockito.when(jweDecrypt.getDecryptedData(anyString(),any())).thenReturn(goodDecrypt);
+
+        service.setRedirectionPaymentRequest(Utils.createRedirectionPaymentRequestBuilder().build());
+
+        PaymentResponse paymentResponse = service.processResponse(response);
+        Assert.assertNotNull(paymentResponse);
+        Assert.assertEquals(PaymentResponseDoPayment.class, paymentResponse.getClass());
+        PaymentResponseDoPayment responseDoPayment  = (PaymentResponseDoPayment) paymentResponse;
+        Assert.assertNotNull(responseDoPayment);
+        Assert.assertNotNull(responseDoPayment.getPaymentMode());
+
+        PaymentModeCard paymentModeCard = (PaymentModeCard) responseDoPayment.getPaymentMode();
+        Assert.assertNotNull(paymentModeCard.getCard());
+        Assert.assertNotNull(paymentModeCard.getPaymentData3DS());
+        Assert.assertEquals("05",paymentModeCard.getPaymentData3DS().getEci());
+        Assert.assertEquals("AgAAAAAABQrqUtnic6MLQAAAAAA=",paymentModeCard.getPaymentData3DS().getCavv());
+        Assert.assertEquals("",paymentModeCard.getCard().getHolder());
+    }
+
+    @Test
+    public void processResponseWithoutECIMasterCard() throws DecryptException {
+        String jsonContent = "{" +
+                "    'resultCode': '0'," +
+                "    'resultMessage': 'SUCCESS'," +
+                "    'method': '3DS'," +
+                "    'card_brand': 'MC'," +
                 "    'card_last4digits': '9406'," +
                 "    '3DS': { 'type': 'S', 'version': '100', 'data': 'longStringWithEncryptedData' }," +
                 "    'wallet_dm_id': 'f2hvqp-QkfN2_0='" +

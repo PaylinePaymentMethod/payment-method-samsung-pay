@@ -32,15 +32,9 @@ import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.payline.payment.samsung.pay.utils.SamsungPayConstants.DEFAULT_ERROR_CODE;
-import static com.payline.payment.samsung.pay.utils.SamsungPayConstants.GET_PAYMENT_CREDENTIALS_PATH;
-import static com.payline.payment.samsung.pay.utils.SamsungPayConstants.PARTNER_PRIVATE_KEY_PROD;
-import static com.payline.payment.samsung.pay.utils.SamsungPayConstants.PARTNER_PRIVATE_KEY_SANDBOX;
-import static com.payline.payment.samsung.pay.utils.SamsungPayConstants.PARTNER_SERVICE_ID_PROD;
-import static com.payline.payment.samsung.pay.utils.SamsungPayConstants.PARTNER_SERVICE_ID_SANDBOX;
-import static com.payline.payment.samsung.pay.utils.SamsungPayConstants.PARTNER_URL_API_PROD;
-import static com.payline.payment.samsung.pay.utils.SamsungPayConstants.PARTNER_URL_API_SANDBOX;
-import static com.payline.payment.samsung.pay.utils.SamsungPayConstants.SERVICE_ID;
+import static com.payline.payment.samsung.pay.bean.rest.response.PaymentCredentialGetResponse.MASTERCARD;
+import static com.payline.payment.samsung.pay.bean.rest.response.PaymentCredentialGetResponse.VISA;
+import static com.payline.payment.samsung.pay.utils.SamsungPayConstants.*;
 
 /**
  * This abstract service handles the common issues encountered when sending, receiving and processing a {@link PaymentRequest} (or subclass)
@@ -163,7 +157,7 @@ public abstract class AbstractPaymentHttpService<T extends PaymentRequest> {
     public StringResponse createGetCredentialRequest(PaymentRequest paymentRequest, String referenceId) throws URISyntaxException, ExternalCommunicationException {
 
         // Create PaymentCredential request form Payline request
-        PaymentCredentialGetRequest paymentCredentialGetRequest = new PaymentCredentialGetRequest(referenceId, paymentRequest.getPartnerConfiguration().getProperty(paymentRequest.getEnvironment().isSandbox()? PARTNER_SERVICE_ID_SANDBOX: PARTNER_SERVICE_ID_PROD));
+        PaymentCredentialGetRequest paymentCredentialGetRequest = new PaymentCredentialGetRequest(referenceId, paymentRequest.getPartnerConfiguration().getProperty(paymentRequest.getEnvironment().isSandbox() ? PARTNER_SERVICE_ID_SANDBOX : PARTNER_SERVICE_ID_PROD));
 
         // Send PaymentCredential request
         String hostKey = paymentRequest.getEnvironment().isSandbox() ? PARTNER_URL_API_SANDBOX : PARTNER_URL_API_PROD;
@@ -207,9 +201,14 @@ public abstract class AbstractPaymentHttpService<T extends PaymentRequest> {
                         .withPanType(Card.PanType.TOKEN_PAN)
                         .build();
 
-                // set the right value to the ECI (see PAYLAPMEXT243)
+                // set the right value to the ECI (see PAYLAPMEXT258)
                 String eci = decryptedCard.getEciIndicator();
-                if (SamsungPayStringUtils.isEmpty(eci) || Integer.parseInt(eci) == 5){
+                String brand = paymentCredentialGetResponse.getCardBrand();
+
+                if (VISA.equalsIgnoreCase(brand) && SamsungPayStringUtils.isEmpty(eci)) {
+                    eci = "05";
+                } else if (MASTERCARD.equalsIgnoreCase(brand)
+                        && (SamsungPayStringUtils.isEmpty(eci) || Integer.parseInt(eci) == 5)) {
                     eci = "02";
                 }
 
