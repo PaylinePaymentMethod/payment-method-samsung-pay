@@ -11,11 +11,13 @@ import com.payline.payment.samsung.pay.bean.rest.response.nesteed.Data3DS;
  * Created by Thales on 20/08/2018.
  */
 public class PaymentCredentialGetResponse extends AbstractJsonResponse {
+    public static final String VISA = "VI";
+    public static final String MASTERCARD = "MC";
 
     @SerializedName("method")
     private String method;
 
-    @SerializedName("cardBrand")
+    @SerializedName("card_brand")
     private String cardBrand;
 
     @SerializedName("cardLast4digit")

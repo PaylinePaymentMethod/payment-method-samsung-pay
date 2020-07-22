@@ -24,7 +24,7 @@ apply plugin: 'jacoco'
 
 description = 'payment-method-samsung-pay'
 group 'com.payline.payment.samsung-pay'
-version '1.3.7'
+version '1.3.8'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -42,8 +42,8 @@ configurations {
 }
 
 ext {
-    paymentMethodApiVersion = '1.4.1'
-    paymentMethodIntegrationVersion = '1.2'
+    paymentMethodApiVersion = '1.7'
+    paymentMethodIntegrationVersion = '1.4'
     releaseDirectoryPath = 'D:/build'
 }
 
