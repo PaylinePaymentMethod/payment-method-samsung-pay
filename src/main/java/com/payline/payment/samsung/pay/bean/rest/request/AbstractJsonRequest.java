@@ -5,9 +5,9 @@ import com.google.gson.Gson;
 /**
  * Created by Thales on 17/08/2018.
  */
-public abstract class AbstractJsonRequest {
+public interface AbstractJsonRequest {
 
-    public String buildBody() {
+    default String buildBody() {
         return new Gson().toJson(this);
     }
 

@@ -4,6 +4,7 @@ import com.payline.payment.samsung.pay.bean.rest.request.CreateTransactionPostRe
 import com.payline.payment.samsung.pay.bean.rest.response.CreateTransactionPostResponse;
 import com.payline.payment.samsung.pay.exception.ExternalCommunicationException;
 import com.payline.payment.samsung.pay.exception.InvalidRequestException;
+import com.payline.payment.samsung.pay.exception.PluginException;
 import com.payline.payment.samsung.pay.utils.http.StringResponse;
 import com.payline.payment.samsung.pay.utils.type.WSRequestResultEnum;
 import com.payline.pmapi.bean.configuration.AvailableNetwork;
@@ -23,7 +24,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static com.payline.payment.samsung.pay.utils.SamsungPayConstants.*;
-import static com.payline.payment.samsung.pay.utils.propertiesFilesConstants.ConfigurationConstants.*;
+import static com.payline.payment.samsung.pay.utils.constants.ConfigurationConstants.*;
 import static com.payline.pmapi.bean.configuration.request.ContractParametersCheckRequest.GENERIC_ERROR;
 
 /**
@@ -34,9 +35,10 @@ public class ConfigurationServiceImpl extends AbstractConfigurationHttpService i
     private static final Logger LOGGER = LogManager.getLogger(ConfigurationServiceImpl.class);
 
     /**
-     * Default public constructor
+     * Default constructor
      */
-    public ConfigurationServiceImpl() {
+    private ConfigurationServiceImpl() {
+        // Do nothing Not instantiated.
     }
 
     @Override
@@ -130,7 +132,7 @@ public class ConfigurationServiceImpl extends AbstractConfigurationHttpService i
         } catch (IOException e) {
             final String message = "An error occurred reading the file: release.properties";
             LOGGER.error(message);
-            throw new RuntimeException(message, e);
+            throw new PluginException(message, e);
         }
 
         final LocalDate date = LocalDate.parse(props.getProperty(RELEASE_DATE), DateTimeFormatter.ofPattern(RELEASE_DATE_FORMAT));

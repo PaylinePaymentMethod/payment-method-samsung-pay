@@ -15,17 +15,6 @@ public class SamsungPayHttpClient extends AbstractHttpClient {
         super(10, 10, 15);
     }
 
-    /**
-     * Instantiate a HTTP client.
-     *
-     * @param connectTimeout Default connect timeout (in seconds) for new connections. A value of 0 means no timeout.
-     * @param writeTimeout   Default write timeout (in seconds) for new connections. A value of 0 means no timeout.
-     * @param readTimeout    Default read timeout (in seconds) for new connections. A value of 0 means no timeout.
-     */
-    private SamsungPayHttpClient(int connectTimeout, int writeTimeout, int readTimeout) {
-        super(connectTimeout, writeTimeout, readTimeout);
-    }
-
     public static SamsungPayHttpClient getInstance() {
         return instance;
     }

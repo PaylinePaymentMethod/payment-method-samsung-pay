@@ -11,15 +11,11 @@ import com.payline.pmapi.bean.payment.request.NotifyTransactionStatusRequest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.Spy;
+import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -63,8 +59,9 @@ public class NotificationServiceImplTest {
                 "}";
         StringResponse response = Utils.createStringResponse(jsonContent, 201);
         doReturn(response).when(service).createRequest(any(NotifyTransactionStatusRequest.class));
-
         service.notifyTransactionStatus(request);
+        verify(service).notifyTransactionStatus(request);
+
     }
 
     @Test
@@ -74,6 +71,7 @@ public class NotificationServiceImplTest {
         doReturn(response).when(service).createRequest(any(NotifyTransactionStatusRequest.class));
 
         service.notifyTransactionStatus(request);
+        verify(service).notifyTransactionStatus(request);
     }
 
     @Test
@@ -87,6 +85,7 @@ public class NotificationServiceImplTest {
         doReturn(response).when(service).createRequest(any(NotifyTransactionStatusRequest.class));
 
         service.notifyTransactionStatus(request);
+        verify(service).notifyTransactionStatus(request);
     }
 
     @Test
@@ -95,6 +94,7 @@ public class NotificationServiceImplTest {
         doThrow(IOException.class).when(service).createRequest(any(NotifyTransactionStatusRequest.class));
 
         service.notifyTransactionStatus(request);
+        verify(service).notifyTransactionStatus(request);
     }
 
     @Test
@@ -106,6 +106,7 @@ public class NotificationServiceImplTest {
         StringResponse response = Utils.createStringResponse(jsonContent, 201);
 
         service.processResponse(response);
+        verify(service).processResponse(response);
     }
 
     @Test
@@ -119,6 +120,7 @@ public class NotificationServiceImplTest {
         response.setContent(jsonContent);
 
         service.processResponse(response);
+        verify(service).processResponse(response);
     }
 
 }

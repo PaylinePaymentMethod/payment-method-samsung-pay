@@ -43,7 +43,7 @@ public class I18nService {
             return messages.getString( key );
         }
         catch( MissingResourceException e ){
-            logger.error( "Trying to get a message with a key that does not exist: " + key + " (language: " + locale.getLanguage() + ")" );
+            logger.error("Trying to get a message with a key that does not exist: {} (language: {})", key, locale.getLanguage());
             return "???" + locale + "." + key + "???";
         }
     }

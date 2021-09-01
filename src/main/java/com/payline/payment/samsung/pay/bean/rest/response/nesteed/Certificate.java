@@ -19,7 +19,9 @@ public class Certificate {
     /**
      * Public default constructor
      */
-    public Certificate() { }
+    public Certificate() {
+        // Do Do nothing Not instantiated.
+    }
 
     public String getUsage() {
         return this.usage;
