@@ -146,7 +146,6 @@ public class PaymentServiceImpl extends AbstractPaymentHttpService<PaymentReques
 
     public String getRefIdFromRequest(PaymentRequest request) {
         String data = request.getPaymentFormContext().getPaymentFormParameter().get(PAYMENTDATA_TOKENDATA);
-        JsonParser p = new JsonParser();
-        return p.parse(data).getAsJsonObject().get(REFERENCE_ID).getAsString();
+        return JsonParser.parseString(data).getAsJsonObject().get(REFERENCE_ID).getAsString();
     }
 }
