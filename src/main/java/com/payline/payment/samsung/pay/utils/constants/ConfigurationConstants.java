@@ -1,4 +1,4 @@
-package com.payline.payment.samsung.pay.utils.propertiesFilesConstants;
+package com.payline.payment.samsung.pay.utils.constants;
 
 public class ConfigurationConstants {
 

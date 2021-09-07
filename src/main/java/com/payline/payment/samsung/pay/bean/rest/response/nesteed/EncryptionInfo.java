@@ -19,7 +19,9 @@ public class EncryptionInfo {
     /**
      * Public default constructor
      */
-    public EncryptionInfo() { }
+    public EncryptionInfo() {
+        // Do nothing Not instantiated.
+    }
 
     public String getMod() {
         return this.mod;

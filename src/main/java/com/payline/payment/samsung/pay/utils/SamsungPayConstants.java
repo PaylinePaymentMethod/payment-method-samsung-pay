@@ -4,6 +4,12 @@ package com.payline.payment.samsung.pay.utils;
  * Created by Thales on 16/08/2018.
  */
 public class SamsungPayConstants {
+
+    /* Static utility class : no need to instantiate it (to Sonar) */
+    private SamsungPayConstants() {
+        // Do nothing Not instantiated.
+    }
+
     public static final String DEFAULT_ERROR_CODE = "no code transmitted";
 
     // Data used in ConfigurationServiceImpl

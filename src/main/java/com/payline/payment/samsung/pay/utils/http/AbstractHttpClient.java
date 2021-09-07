@@ -7,6 +7,7 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.BasicCredentialsProvider;
@@ -67,7 +68,7 @@ public abstract class AbstractHttpClient {
      * @param contentType The content type of the request body
      * @param requestId   The unique identifier for the request
      * @return The response returned from the HTTP call
-     * @throws IOException
+     * @throws URISyntaxException, ExternalCommunicationException
      */
     protected StringResponse doPost(String url, String path, HttpEntity body, String contentType, String requestId) throws URISyntaxException, ExternalCommunicationException {
 
@@ -81,35 +82,7 @@ public abstract class AbstractHttpClient {
         httpPostRequest.setHeaders(headers);
         httpPostRequest.setEntity(body);
 
-        final long start = System.currentTimeMillis();
-        int count = 0;
-        StringResponse strResponse = null;
-
-        while (count < 3 && strResponse == null) {
-            try (CloseableHttpResponse httpResponse = this.client.execute(httpPostRequest)) {
-
-                strResponse = new StringResponse();
-                strResponse.setCode(httpResponse.getStatusLine().getStatusCode());
-                strResponse.setMessage(httpResponse.getStatusLine().getReasonPhrase());
-
-                if (httpResponse.getEntity() != null) {
-                    final String responseAsString = EntityUtils.toString(httpResponse.getEntity());
-                    strResponse.setContent(responseAsString);
-                }
-
-            } catch (final IOException e) {
-                LOGGER.error("Error while partner call [T: {}ms]", System.currentTimeMillis() - start, e);
-                strResponse = null;
-            } finally {
-                count++;
-            }
-        }
-
-        if (strResponse == null) {
-            throw new ExternalCommunicationException("Partner response empty");
-        }
-
-        return strResponse;
+        return getStringResponse(httpPostRequest);
     }
 
     /**
@@ -121,14 +94,14 @@ public abstract class AbstractHttpClient {
      * @param contentType     The content type of the request body
      * @param requestId       The unique identifier for the request
      * @return The response returned from the HTTP call
-     * @throws IOException
+     * @throws URISyntaxException, ExternalCommunicationException
      */
     protected StringResponse doGet(String url, String path, Map<String, String> queryAttributes, String contentType, String requestId) throws URISyntaxException, ExternalCommunicationException {
 
         URIBuilder builder = new URIBuilder(url + path);
         if (queryAttributes != null && !queryAttributes.isEmpty()) {
-            for (String key : queryAttributes.keySet()) {
-                builder.setParameter(key, queryAttributes.get(key));
+            for (Map.Entry<String,String> entry : queryAttributes.entrySet()) {
+                builder.setParameter(entry.getKey(), entry.getValue());
             }
         }
         final URI uri = builder.build();
@@ -140,12 +113,16 @@ public abstract class AbstractHttpClient {
         final HttpGet httpGetRequest = new HttpGet(uri);
         httpGetRequest.setHeaders(headers);
 
+        return getStringResponse(httpGetRequest);
+    }
+
+    private StringResponse getStringResponse(HttpUriRequest httpUriRequest) throws ExternalCommunicationException {
         final long start = System.currentTimeMillis();
         int count = 0;
         StringResponse strResponse = null;
 
         while (count < 3 && strResponse == null) {
-            try (CloseableHttpResponse httpResponse = this.client.execute(httpGetRequest)) {
+            try (CloseableHttpResponse httpResponse = this.client.execute(httpUriRequest)) {
 
                 strResponse = new StringResponse();
                 strResponse.setCode(httpResponse.getStatusLine().getStatusCode());

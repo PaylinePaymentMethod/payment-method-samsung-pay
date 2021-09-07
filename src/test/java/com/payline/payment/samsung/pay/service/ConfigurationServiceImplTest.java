@@ -37,7 +37,7 @@ public class ConfigurationServiceImplTest {
     private SamsungPayHttpClient httpClient;
 
     @InjectMocks
-    private ConfigurationServiceImpl service = new ConfigurationServiceImpl();
+    private ConfigurationServiceImpl service;
 //
 //    @Before
 //    public void setup(){
