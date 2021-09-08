@@ -24,13 +24,11 @@ import static com.payline.payment.samsung.pay.utils.SamsungPayConstants.*;
  */
 public class NotificationServiceImpl implements NotificationService {
 
-    private final static Logger LOGGER = LogManager.getLogger(NotificationServiceImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(NotificationServiceImpl.class);
 
     private SamsungPayHttpClient httpClient;
 
     private NotificationPostRequest.Builder requestBuilder;
-
-    private NotifyTransactionStatusRequest notifyTransactionStatusRequest;
 
     /**
      * Default public constructor

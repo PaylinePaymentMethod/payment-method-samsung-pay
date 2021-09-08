@@ -40,7 +40,7 @@ configurations {
 }
 
 ext {
-    paymentMethodApiVersion = '1.7'
+    paymentMethodApiVersion = '1.14'
     paymentMethodIntegrationVersion = '1.4'
     releaseDirectoryPath = 'D:/build'
 }
@@ -54,19 +54,18 @@ dependencies {
     implementation group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.14'
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
 
-    testRuntimeOnly group: 'commons-lang', name: 'commons-lang', version: '2.6'
-    testImplementation group: "junit", name: "junit", version: "4.13"
-    testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.3.0'
+    testImplementation group: "junit", name: "junit", version: "4.13.2"
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.12.4'
     testImplementation "com.payline:payment-method-api:${paymentMethodApiVersion}"
     testImplementation "com.payline:payment-method-integration:${paymentMethodIntegrationVersion}"
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.5.0'
-    testImplementation group: 'org.seleniumhq.selenium', name: 'selenium-server', version: '3.14.0'
-    testImplementation group: 'org.seleniumhq.selenium', name: 'selenium-support', version: '3.14.0'
+    testImplementation group: 'org.seleniumhq.selenium', name: 'selenium-server', version: '3.141.59'
+    testImplementation group: 'org.seleniumhq.selenium', name: 'selenium-support', version: '3.141.59'
 
-    fatJarTest group: "junit", name: "junit", version: "4.13"
-    fatJarTest group: 'org.mockito', name: 'mockito-core', version: '3.3.0'
-    fatJarTest group: 'org.seleniumhq.selenium', name: 'selenium-server', version: '3.14.0'
-    fatJarTest group: 'org.seleniumhq.selenium', name: 'selenium-support', version: '3.14.0'
+    fatJarTest group: "junit", name: "junit", version: "4.13.2"
+    fatJarTest group: 'org.mockito', name: 'mockito-core', version: '3.12.4'
+    fatJarTest group: 'org.seleniumhq.selenium', name: 'selenium-server', version: '3.141.59'
+    fatJarTest group: 'org.seleniumhq.selenium', name: 'selenium-support', version: '3.141.59'
     fatJarTest group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.5.0'
     fatJarTest group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.5.0'
 
@@ -91,8 +90,8 @@ shadowJar {
         exclude(dependency('org.apache.logging.log4j:log4j-core:2.13.3'))
         exclude(dependency('org.junit.jupiter:junit-jupiter-params:5.5.0'))
         exclude(dependency('org.junit.jupiter:junit-jupiter-api:5.5.0'))
-        exclude(dependency('org.seleniumhq.selenium:selenium-server:3.14.0'))
-        exclude(dependency('org.seleniumhq.selenium:selenium-support:3.14.0'))
+        exclude(dependency('org.seleniumhq.selenium:selenium-server:3.141.59'))
+        exclude(dependency('org.seleniumhq.selenium:selenium-support:3.141.59'))
     }
 }
 
