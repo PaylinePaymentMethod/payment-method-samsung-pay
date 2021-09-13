@@ -37,7 +37,7 @@ public class ConfigurationServiceImpl extends AbstractConfigurationHttpService i
     /**
      * Default constructor
      */
-    private ConfigurationServiceImpl() {
+    public ConfigurationServiceImpl() {
         // Do nothing Not instantiated.
     }
 
