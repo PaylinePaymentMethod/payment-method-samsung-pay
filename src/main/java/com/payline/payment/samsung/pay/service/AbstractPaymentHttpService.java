@@ -113,7 +113,7 @@ public abstract class AbstractPaymentHttpService<T extends PaymentRequest> {
             StringResponse response = this.createGetCredentialRequest(paymentRequest, refId);
             if (response != null && response.getContent() != null) {
                 // Mandate the child class to process the request when it's OK (which is specific to each implementation)
-                return this.processResponse(response);
+                return this.processDirectResponse(paymentRequest, response);
             } else {
                 LOGGER.error("The HTTP response or its body is null and should not be");
                 return buildPaymentResponseFailure(DEFAULT_ERROR_CODE, FailureCause.COMMUNICATION_ERROR);
