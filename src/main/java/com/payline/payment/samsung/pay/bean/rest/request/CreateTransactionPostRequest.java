@@ -16,7 +16,7 @@ import static com.payline.payment.samsung.pay.utils.SamsungPayStringUtils.isEmpt
 /**
  * Created by Thales on 16/08/2018.
  */
-public class CreateTransactionPostRequest extends AbstractJsonRequest {
+public class CreateTransactionPostRequest implements AbstractJsonRequest {
 
     @SerializedName("callback")
     private String callback;

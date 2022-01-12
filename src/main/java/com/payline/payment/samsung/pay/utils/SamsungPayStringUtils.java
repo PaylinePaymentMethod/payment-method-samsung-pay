@@ -4,6 +4,12 @@ import java.math.BigInteger;
 import java.util.Currency;
 
 public class SamsungPayStringUtils {
+
+    /* Static utility class : no need to instantiate it (to Sonar) */
+    private SamsungPayStringUtils() {
+        // Do nothing Not instantiated.
+    }
+
     public static boolean isEmpty(String str){
         if( str == null || str.length() == 0){
             return true;

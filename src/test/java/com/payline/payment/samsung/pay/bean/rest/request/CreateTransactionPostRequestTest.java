@@ -80,7 +80,7 @@ public class CreateTransactionPostRequestTest {
     @Test
     public void fromCheckRequest() throws InvalidRequestException {
         ContractParametersCheckRequest request = Utils.createContractParametersCheckRequest("aMerchant");
-        new CreateTransactionPostRequest.Builder().fromCheckRequest(request);
+        Assert.assertNotNull(new CreateTransactionPostRequest.Builder().fromCheckRequest(request));
     }
 
     @Test(expected = InvalidRequestException.class)

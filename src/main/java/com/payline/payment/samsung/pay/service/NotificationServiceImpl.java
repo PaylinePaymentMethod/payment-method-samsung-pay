@@ -24,13 +24,11 @@ import static com.payline.payment.samsung.pay.utils.SamsungPayConstants.*;
  */
 public class NotificationServiceImpl implements NotificationService {
 
-    private final static Logger LOGGER = LogManager.getLogger(PaymentServiceImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(NotificationServiceImpl.class);
 
     private SamsungPayHttpClient httpClient;
 
     private NotificationPostRequest.Builder requestBuilder;
-
-    private NotifyTransactionStatusRequest notifyTransactionStatusRequest;
 
     /**
      * Default public constructor
@@ -47,8 +45,6 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void notifyTransactionStatus(NotifyTransactionStatusRequest notifyTransactionStatusRequest) {
-        this.notifyTransactionStatusRequest = notifyTransactionStatusRequest;
-
         try {
 
             // Mandate the child class to create and send the request (which is specific to each implementation)
@@ -57,7 +53,7 @@ public class NotificationServiceImpl implements NotificationService {
             if (response != null && response.getCode() == HTTP_CREATED && response.getContent() != null) {
                 this.processResponse(response);
             } else if (response != null && response.getCode() != HTTP_CREATED) {
-                LOGGER.error("An HTTP error occurred while sending the request: " + response.getContent());
+                LOGGER.error("An HTTP error occurred while sending the request: {}", response.getContent());
                 // Nothing to do, no response to return
             } else {
                 LOGGER.error("The HTTP response or its body is null and should not be");
@@ -94,14 +90,10 @@ public class NotificationServiceImpl implements NotificationService {
         NotificationPostResponse notificationPostResponse = new NotificationPostResponse.Builder().fromJson(response.getContent());
 
         if (notificationPostResponse.isResultOk()) {
-            LOGGER.info("Samsung Pay notification OK: " + notificationPostResponse.getResultMessage());
+            LOGGER.info("Samsung Pay notification OK: {}", notificationPostResponse.getResultMessage());
         } else {
-            LOGGER.error("Samsung Pay notification KO: " + notificationPostResponse.getResultMessage());
+            LOGGER.error("Samsung Pay notification KO: {}", notificationPostResponse.getResultMessage());
         }
 
-    }
-
-    public void setNotifyTransactionStatusRequest(NotifyTransactionStatusRequest notifyTransactionStatusRequest) {
-        this.notifyTransactionStatusRequest = notifyTransactionStatusRequest;
     }
 }

@@ -8,6 +8,7 @@ import com.payline.pmapi.bean.configuration.PartnerConfiguration;
 import com.payline.pmapi.bean.configuration.request.ContractParametersCheckRequest;
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -19,8 +20,9 @@ import static com.payline.payment.samsung.pay.utils.Utils.SANDBOX_URL_API;
 import static com.payline.payment.samsung.pay.utils.Utils.SANDBOX_URL_JS;
 
 public class ConfigServiceIT {
-    private ConfigurationServiceImpl service = new ConfigurationServiceImpl();
 
+    @InjectMocks
+    private ConfigurationServiceImpl service;
 
     @Test
     public void checkOk() {

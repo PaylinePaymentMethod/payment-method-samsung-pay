@@ -48,6 +48,8 @@ public abstract class AbstractPaymentHttpService<T extends PaymentRequest> {
     protected SamsungPayHttpClient httpClient;
     protected JweDecrypt jweDecrypt;
 
+    private static final String PATH_SEPARATOR = "/";
+
     protected AbstractPaymentHttpService() {
         this.httpClient = SamsungPayHttpClient.getInstance();
         this.jweDecrypt = JweDecrypt.getInstance();
@@ -111,7 +113,7 @@ public abstract class AbstractPaymentHttpService<T extends PaymentRequest> {
             StringResponse response = this.createGetCredentialRequest(paymentRequest, refId);
             if (response != null && response.getContent() != null) {
                 // Mandate the child class to process the request when it's OK (which is specific to each implementation)
-                return this.processResponse(response);
+                return this.processDirectResponse(paymentRequest, response);
             } else {
                 LOGGER.error("The HTTP response or its body is null and should not be");
                 return buildPaymentResponseFailure(DEFAULT_ERROR_CODE, FailureCause.COMMUNICATION_ERROR);
@@ -162,7 +164,7 @@ public abstract class AbstractPaymentHttpService<T extends PaymentRequest> {
         // Send PaymentCredential request
         String hostKey = paymentRequest.getEnvironment().isSandbox() ? PARTNER_URL_API_SANDBOX : PARTNER_URL_API_PROD;
         String host = paymentRequest.getPartnerConfiguration().getProperty(hostKey);
-        String path = GET_PAYMENT_CREDENTIALS_PATH + "/" + paymentCredentialGetRequest.getId();
+        String path = GET_PAYMENT_CREDENTIALS_PATH + PATH_SEPARATOR + paymentCredentialGetRequest.getId();
 
         // Build the request query attributes map
         Map<String, String> queryAttributes = new HashMap<>();
@@ -187,8 +189,7 @@ public abstract class AbstractPaymentHttpService<T extends PaymentRequest> {
                 // Decrypt 3DS data to retrieve Payment Mode info
                 String cardData = jweDecrypt.getDecryptedData(cipheredData, privateKey);
                 LOGGER.info(() -> {
-                    final JsonParser jsonParser = new JsonParser();
-                    final JsonObject jsonObject = jsonParser.parse(cardData).getAsJsonObject();
+                    final JsonObject jsonObject = JsonParser.parseString(cardData).getAsJsonObject();
                     jsonObject.remove("tokenPAN");
                     return jsonObject.toString();
                 });

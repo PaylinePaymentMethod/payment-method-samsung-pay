@@ -13,7 +13,7 @@ import static com.payline.payment.samsung.pay.utils.SamsungPayStringUtils.isEmpt
 /**
  * Created by Thales on 16/08/2018.
  */
-public class NotificationPostRequest extends AbstractJsonRequest {
+public class NotificationPostRequest implements AbstractJsonRequest {
 
     @SerializedName("payment")
     private Payment payment;
