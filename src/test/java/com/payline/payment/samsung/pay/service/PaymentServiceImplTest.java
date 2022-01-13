@@ -65,14 +65,15 @@ public class PaymentServiceImplTest {
     }
 
     @Test
-    public void paymentRequestDirect(){
-//        PaymentResponse response = PaymentResponseSuccess.PaymentResponseSuccessBuilder.aPaymentResponseSuccess().withTransactionDetails(Email.EmailBuilder.anEmail().withEmail("foo@bar.baz").build()).withPartnerTransactionId("normal").build();
+    public void paymentRequestDirect() throws URISyntaxException, ExternalCommunicationException {
         PaymentResponse responseDirect = PaymentResponseSuccess.PaymentResponseSuccessBuilder.aPaymentResponseSuccess().withTransactionDetails(Email.EmailBuilder.anEmail().withEmail("foo@bar.baz").build()).withPartnerTransactionId("direct").build();
-//        doReturn(response).when(service).processRequest(any());
-        doReturn(responseDirect).when(service).processDirectRequest(any(), any());
-
-        PaymentRequest request = Utils.createCompletePaymentBuilder().build();
+        final PaymentRequest request = Utils.createCompletePaymentBuilder().build();
         request.getPaymentFormContext().getPaymentFormParameter().put(PAYMENTDATA_TOKENDATA, "{\"REFERENCE_ID\": \"667ae458c01b4d95bdc76af81e3cd11e\"}");
+        final StringResponse response = new StringResponse();
+        response.setContent("thisIsAResponse");
+        doReturn(response).when(service).createGetCredentialRequest(request, "667ae458c01b4d95bdc76af81e3cd11e");
+        doReturn(responseDirect).when(service).processDirectResponse(request, response);
+
         PaymentResponse paymentResponse = service.paymentRequest(request);
         PaymentResponseSuccess responseSuccess =  (PaymentResponseSuccess) paymentResponse;
         Assert.assertEquals("direct", responseSuccess.getPartnerTransactionId());

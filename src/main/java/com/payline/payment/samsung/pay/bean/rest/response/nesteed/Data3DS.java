@@ -19,7 +19,9 @@ public class Data3DS {
     /**
      * Default public constructor
      */
-    public Data3DS() { }
+    public Data3DS() {
+       // Do nothing Not instantiated.
+    }
 
     public String getType() {
         return this.type;
