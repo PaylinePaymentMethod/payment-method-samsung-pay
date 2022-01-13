@@ -24,7 +24,7 @@ apply plugin: 'jacoco'
 
 description = 'payment-method-samsung-pay'
 group 'com.payline.payment.samsung-pay'
-version '1.4.1-SNAPSHOT'
+version '1.4.1'
 
 compileJava.options.encoding = 'UTF-8'
 
