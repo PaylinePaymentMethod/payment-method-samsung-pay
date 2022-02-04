@@ -79,7 +79,7 @@ public abstract class LogoPaymentFormConfigurationService implements PaymentForm
     }
 
     protected BufferedImage getBufferedImage(String fileName) throws IOException {
-        final InputStream input = PaymentFormConfigurationService.class.getClassLoader().getResourceAsStream(fileName);
+        final InputStream input = this.getClass().getClassLoader().getResourceAsStream(fileName);
         return ImageIO.read(input);
     }
 }
