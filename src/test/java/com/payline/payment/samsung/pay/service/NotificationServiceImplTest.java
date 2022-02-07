@@ -8,22 +8,24 @@ import com.payline.payment.samsung.pay.utils.http.StringResponse;
 import com.payline.pmapi.bean.notification.response.NotificationResponse;
 import com.payline.pmapi.bean.notification.response.impl.IgnoreNotificationResponse;
 import com.payline.pmapi.bean.payment.request.NotifyTransactionStatusRequest;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.*;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-/**
- * Created by Thales on 27/08/2018.
- */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class NotificationServiceImplTest {
     @Mock
     private SamsungPayHttpClient httpClient;
@@ -35,8 +37,8 @@ public class NotificationServiceImplTest {
     @Test
     public void parse(){
         NotificationResponse response = service.parse(null);
-        Assert.assertNotNull(response);
-        Assert.assertEquals(IgnoreNotificationResponse.class, response.getClass());
+        assertNotNull(response);
+        assertEquals(IgnoreNotificationResponse.class, response.getClass());
     }
 
     @Test
@@ -47,7 +49,7 @@ public class NotificationServiceImplTest {
 
         NotifyTransactionStatusRequest request = Utils.createNotifyTransactionRequest();
         StringResponse httpResponse = service.createRequest(request);
-        Assert.assertEquals(content, httpResponse.getContent());
+        assertEquals(content, httpResponse.getContent());
     }
 
     @Test

@@ -14,25 +14,21 @@ import com.payline.pmapi.bean.payment.response.PaymentModeCard;
 import com.payline.pmapi.bean.payment.response.PaymentResponse;
 import com.payline.pmapi.bean.payment.response.impl.PaymentResponseDoPayment;
 import com.payline.pmapi.bean.payment.response.impl.PaymentResponseFailure;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.net.URISyntaxException;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyMap;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.spy;
 
-/**
- * Created by Thales on 27/08/2018.
- */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class PaymentWithRedirectionServiceImplTest {
 
     @Mock
@@ -53,7 +49,7 @@ public class PaymentWithRedirectionServiceImplTest {
         service.setRedirectionPaymentRequest(Utils.createRedirectionPaymentRequest());
 
         StringResponse httpResponse = service.createSendRequest(request);
-        Assert.assertEquals(content, httpResponse.getContent());
+        assertEquals(content, httpResponse.getContent());
     }
 
     @Test
@@ -75,18 +71,18 @@ public class PaymentWithRedirectionServiceImplTest {
         service.setRedirectionPaymentRequest(Utils.createRedirectionPaymentRequestBuilder().build());
 
         PaymentResponse paymentResponse = service.processResponse(response);
-        Assert.assertNotNull(paymentResponse);
-        Assert.assertEquals(PaymentResponseDoPayment.class, paymentResponse.getClass());
+        assertNotNull(paymentResponse);
+        assertEquals(PaymentResponseDoPayment.class, paymentResponse.getClass());
         PaymentResponseDoPayment responseDoPayment  = (PaymentResponseDoPayment) paymentResponse;
-        Assert.assertNotNull(responseDoPayment);
-        Assert.assertNotNull(responseDoPayment.getPaymentMode());
+        assertNotNull(responseDoPayment);
+        assertNotNull(responseDoPayment.getPaymentMode());
 
         PaymentModeCard paymentModeCard = (PaymentModeCard) responseDoPayment.getPaymentMode();
-        Assert.assertNotNull(paymentModeCard.getCard());
-        Assert.assertNotNull(paymentModeCard.getPaymentData3DS());
-        Assert.assertEquals("07",paymentModeCard.getPaymentData3DS().getEci());
-        Assert.assertEquals("AgAAAAAABQrqUtnic6MLQAAAAAA=",paymentModeCard.getPaymentData3DS().getCavv());
-        Assert.assertEquals("",paymentModeCard.getCard().getHolder());
+        assertNotNull(paymentModeCard.getCard());
+        assertNotNull(paymentModeCard.getPaymentData3DS());
+        assertEquals("07",paymentModeCard.getPaymentData3DS().getEci());
+        assertEquals("AgAAAAAABQrqUtnic6MLQAAAAAA=",paymentModeCard.getPaymentData3DS().getCavv());
+        assertEquals("",paymentModeCard.getCard().getHolder());
     }
 
     @Test
@@ -108,18 +104,18 @@ public class PaymentWithRedirectionServiceImplTest {
         service.setRedirectionPaymentRequest(Utils.createRedirectionPaymentRequestBuilder().build());
 
         PaymentResponse paymentResponse = service.processResponse(response);
-        Assert.assertNotNull(paymentResponse);
-        Assert.assertEquals(PaymentResponseDoPayment.class, paymentResponse.getClass());
+        assertNotNull(paymentResponse);
+        assertEquals(PaymentResponseDoPayment.class, paymentResponse.getClass());
         PaymentResponseDoPayment responseDoPayment  = (PaymentResponseDoPayment) paymentResponse;
-        Assert.assertNotNull(responseDoPayment);
-        Assert.assertNotNull(responseDoPayment.getPaymentMode());
+        assertNotNull(responseDoPayment);
+        assertNotNull(responseDoPayment.getPaymentMode());
 
         PaymentModeCard paymentModeCard = (PaymentModeCard) responseDoPayment.getPaymentMode();
-        Assert.assertNotNull(paymentModeCard.getCard());
-        Assert.assertNotNull(paymentModeCard.getPaymentData3DS());
-        Assert.assertEquals("05",paymentModeCard.getPaymentData3DS().getEci());
-        Assert.assertEquals("AgAAAAAABQrqUtnic6MLQAAAAAA=",paymentModeCard.getPaymentData3DS().getCavv());
-        Assert.assertEquals("",paymentModeCard.getCard().getHolder());
+        assertNotNull(paymentModeCard.getCard());
+        assertNotNull(paymentModeCard.getPaymentData3DS());
+        assertEquals("05",paymentModeCard.getPaymentData3DS().getEci());
+        assertEquals("AgAAAAAABQrqUtnic6MLQAAAAAA=",paymentModeCard.getPaymentData3DS().getCavv());
+        assertEquals("",paymentModeCard.getCard().getHolder());
     }
 
     @Test
@@ -141,18 +137,18 @@ public class PaymentWithRedirectionServiceImplTest {
         service.setRedirectionPaymentRequest(Utils.createRedirectionPaymentRequestBuilder().build());
 
         PaymentResponse paymentResponse = service.processResponse(response);
-        Assert.assertNotNull(paymentResponse);
-        Assert.assertEquals(PaymentResponseDoPayment.class, paymentResponse.getClass());
+        assertNotNull(paymentResponse);
+        assertEquals(PaymentResponseDoPayment.class, paymentResponse.getClass());
         PaymentResponseDoPayment responseDoPayment  = (PaymentResponseDoPayment) paymentResponse;
-        Assert.assertNotNull(responseDoPayment);
-        Assert.assertNotNull(responseDoPayment.getPaymentMode());
+        assertNotNull(responseDoPayment);
+        assertNotNull(responseDoPayment.getPaymentMode());
 
         PaymentModeCard paymentModeCard = (PaymentModeCard) responseDoPayment.getPaymentMode();
-        Assert.assertNotNull(paymentModeCard.getCard());
-        Assert.assertNotNull(paymentModeCard.getPaymentData3DS());
-        Assert.assertEquals("02",paymentModeCard.getPaymentData3DS().getEci());
-        Assert.assertEquals("AgAAAAAABQrqUtnic6MLQAAAAAA=",paymentModeCard.getPaymentData3DS().getCavv());
-        Assert.assertEquals("",paymentModeCard.getCard().getHolder());
+        assertNotNull(paymentModeCard.getCard());
+        assertNotNull(paymentModeCard.getPaymentData3DS());
+        assertEquals("02",paymentModeCard.getPaymentData3DS().getEci());
+        assertEquals("AgAAAAAABQrqUtnic6MLQAAAAAA=",paymentModeCard.getPaymentData3DS().getCavv());
+        assertEquals("",paymentModeCard.getCard().getHolder());
     }
 
     @Test
@@ -173,11 +169,11 @@ public class PaymentWithRedirectionServiceImplTest {
         Mockito.when(jweDecrypt.getDecryptedData(anyString(),any())).thenThrow(DecryptException.class);
 
         PaymentResponse paymentResponse = service.processResponse(response);
-        Assert.assertNotNull(paymentResponse);
-        Assert.assertEquals(PaymentResponseFailure.class, paymentResponse.getClass());
+        assertNotNull(paymentResponse);
+        assertEquals(PaymentResponseFailure.class, paymentResponse.getClass());
 
         PaymentResponseFailure responseFailure = (PaymentResponseFailure) paymentResponse;
-        Assert.assertEquals(FailureCause.INVALID_FIELD_FORMAT, responseFailure.getFailureCause());
+        assertEquals(FailureCause.INVALID_FIELD_FORMAT, responseFailure.getFailureCause());
     }
 
     @Test
@@ -185,8 +181,8 @@ public class PaymentWithRedirectionServiceImplTest {
         TransactionStatusRequest request = Utils.createTransactionStatusRequest();
         PaymentResponse response = service.handleSessionExpired(request);
 
-        Assert.assertNotNull(response);
-        Assert.assertEquals(PaymentResponseFailure.class, response.getClass());
-        Assert.assertEquals(FailureCause.SESSION_EXPIRED, ((PaymentResponseFailure) response).getFailureCause());
+        assertNotNull(response);
+        assertEquals(PaymentResponseFailure.class, response.getClass());
+        assertEquals(FailureCause.SESSION_EXPIRED, ((PaymentResponseFailure) response).getFailureCause());
     }
 }

@@ -1,10 +1,11 @@
 package com.payline.payment.samsung.pay.utils;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JweDecryptTest {
 
@@ -19,6 +20,6 @@ public class JweDecryptTest {
         // load the private key file
         byte[] privKey = Files.readAllBytes(Paths.get(JweDecrypt.class.getClassLoader().getResource("keystore/encodedPrivateKey.txt").toURI()));
         String res = service.getDecryptedData(ciphered, privKey);
-        Assert.assertEquals(clear, res);
+        assertEquals(clear, res);
     }
 }

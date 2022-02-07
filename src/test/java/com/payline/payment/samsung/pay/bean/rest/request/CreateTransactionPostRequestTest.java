@@ -9,100 +9,124 @@ import com.payline.pmapi.bean.payment.ContractConfiguration;
 import com.payline.pmapi.bean.payment.Environment;
 import com.payline.pmapi.bean.payment.Order;
 import com.payline.pmapi.bean.payment.request.PaymentRequest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
 import java.util.HashMap;
 
 import static com.payline.payment.samsung.pay.utils.Utils.NOTIFICATION_URL;
 import static com.payline.pmapi.integration.AbstractPaymentIntegration.CANCEL_URL;
+import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Created by Thales on 27/08/2018.
- */
 public class CreateTransactionPostRequestTest {
 
-    @Test
-    public void fromPaymentRequest() throws InvalidRequestException {
-        PaymentRequest request = Utils.createCompletePaymentBuilder().build();
+    @Nested
+    class fromPaymentRequest {
+        @Test
+        public void fromPaymentRequest() throws InvalidRequestException {
+            final PaymentRequest request = Utils.createCompletePaymentBuilder().build();
 
-        CreateTransactionPostRequest samsungRequest = new CreateTransactionPostRequest.Builder().fromPaymentRequest(request);
-        Assert.assertNotNull(samsungRequest);
+            final CreateTransactionPostRequest samsungRequest = new CreateTransactionPostRequest.Builder().fromPaymentRequest(request);
+            assertNotNull(samsungRequest);
+        }
+
+        @Test
+        public void fromPaymentRequestNoOrderReference() {
+            final Order emptyOrder = Order.OrderBuilder.anOrder().build();
+            final PaymentRequest request = Utils.createCompletePaymentBuilder().withOrder(emptyOrder).build();
+            assertThrows(InvalidRequestException.class, () -> {
+                new CreateTransactionPostRequest.Builder().fromPaymentRequest(request);
+            });
+        }
+
+        @Test
+        public void fromPaymentRequestNoMerchantNameProperties() {
+            final ContractConfiguration configuration = new ContractConfiguration("", new HashMap<>());
+            final PaymentRequest request = Utils.createCompletePaymentBuilder().withContractConfiguration(configuration).build();
+            assertThrows(InvalidRequestException.class, () -> {
+                new CreateTransactionPostRequest.Builder().fromPaymentRequest(request);
+            });
+        }
+
+        @Test
+        public void fromPaymentRequestNoCallBackUrl() {
+            final Environment environment = new Environment(NOTIFICATION_URL,null,CANCEL_URL,true);
+            final PaymentRequest request = Utils.createCompletePaymentBuilder().withEnvironment(environment).build();
+            assertThrows(InvalidRequestException.class, () -> {
+                new CreateTransactionPostRequest.Builder().fromPaymentRequest(request);
+            });
+        }
+
+        @Test
+        public void fromPaymentRequestNoServiceId() {
+            final PartnerConfiguration configuration = new PartnerConfiguration(new HashMap<>(),new HashMap<>());
+            final PaymentRequest request = Utils.createCompletePaymentBuilder().withPartnerConfiguration(configuration).build();
+            assertThrows(InvalidRequestException.class, () -> {
+                new CreateTransactionPostRequest.Builder().fromPaymentRequest(request);
+            });
+        }
+
+        @Test
+        public void fromPaymentRequestNullRequest() {
+            assertThrows(InvalidRequestException.class, () -> {
+                new CreateTransactionPostRequest.Builder().fromPaymentRequest(null);
+            });
+        }
+
+        @Test
+        public void fromPaymentRequestNoAmountSmallestUnit() {
+            final PaymentRequest request = Utils.createCompletePaymentBuilder().withAmount(new Amount(null,null)).build();
+            assertThrows(InvalidRequestException.class, () -> {
+                new CreateTransactionPostRequest.Builder().fromPaymentRequest(request);
+            });
+        }
+
+        @Test
+        public void fromPaymentRequestNoAmountCurrency() {
+            final PaymentRequest request = Utils.createCompletePaymentBuilder().withAmount(new Amount(new BigInteger("1"),null)).build();
+            assertThrows(InvalidRequestException.class, () -> {
+                new CreateTransactionPostRequest.Builder().fromPaymentRequest(request);
+            });
+        }
     }
 
-    @Test(expected = InvalidRequestException.class)
-    public void fromPaymentRequestNoOrderReference() throws InvalidRequestException {
-        Order emptyOrder = Order.OrderBuilder.anOrder().build();
-        PaymentRequest request = Utils.createCompletePaymentBuilder().withOrder(emptyOrder).build();
-        new CreateTransactionPostRequest.Builder().fromPaymentRequest(request);
-    }
+    @Nested
+    class fromCheckRequest {
+        @Test
+        public void fromCheckRequest() throws InvalidRequestException {
+            final ContractParametersCheckRequest request = Utils.createContractParametersCheckRequest("aMerchant");
+            assertNotNull(new CreateTransactionPostRequest.Builder().fromCheckRequest(request));
+        }
 
-    @Test(expected = InvalidRequestException.class)
-    public void fromPaymentRequestNoMerchantNameProperties() throws InvalidRequestException {
-        ContractConfiguration configuration = new ContractConfiguration("", new HashMap<>());
-        PaymentRequest request = Utils.createCompletePaymentBuilder().withContractConfiguration(configuration).build();
-        new CreateTransactionPostRequest.Builder().fromPaymentRequest(request);
-    }
+        @Test
+        public void fromCheckRequestNullRequest() {
+            assertThrows(InvalidRequestException.class, () -> {
+                new CreateTransactionPostRequest.Builder().fromCheckRequest(null);
+            });
+        }
 
-    @Test(expected = InvalidRequestException.class)
-    public void fromPaymentRequestNoCallBackUrl() throws InvalidRequestException {
-        Environment environment = new Environment(NOTIFICATION_URL,null,CANCEL_URL,true);
-        PaymentRequest request = Utils.createCompletePaymentBuilder().withEnvironment(environment).build();
-        new CreateTransactionPostRequest.Builder().fromPaymentRequest(request);
-    }
+        @Test
+        public void fromCheckRequestNullPartnerConfiguration() {
+            final ContractParametersCheckRequest request = Utils.createContractParametersCheckRequestBuilder("aMerchant")
+                    .withPartnerConfiguration(null)
+                    .build();
 
-    @Test(expected = InvalidRequestException.class)
-    public void fromPaymentRequestNoServiceId() throws InvalidRequestException {
-        PartnerConfiguration configuration = new PartnerConfiguration(new HashMap<>(),new HashMap<>());
-        PaymentRequest request = Utils.createCompletePaymentBuilder().withPartnerConfiguration(configuration).build();
-        new CreateTransactionPostRequest.Builder().fromPaymentRequest(request);
-    }
+            assertThrows(InvalidRequestException.class, () -> {
+                new CreateTransactionPostRequest.Builder().fromCheckRequest(request);
+            });
+        }
 
-    @Test(expected = InvalidRequestException.class)
-    public void fromPaymentRequestNullRequest() throws InvalidRequestException {
-        new CreateTransactionPostRequest.Builder().fromPaymentRequest(null);
-    }
-
-    @Test(expected = InvalidRequestException.class)
-    public void fromPaymentRequestNoAmountSmallestUnit() throws InvalidRequestException {
-        PaymentRequest request = Utils.createCompletePaymentBuilder().withAmount(new Amount(null,null)).build();
-        new CreateTransactionPostRequest.Builder().fromPaymentRequest(request);
-    }
-
-    @Test(expected = InvalidRequestException.class)
-    public void fromPaymentRequestNoAmountCurrency() throws InvalidRequestException {
-        PaymentRequest request = Utils.createCompletePaymentBuilder().withAmount(new Amount(new BigInteger("1"),null)).build();
-        new CreateTransactionPostRequest.Builder().fromPaymentRequest(request);
-    }
-
-    // fromCheckRequest test
-    @Test
-    public void fromCheckRequest() throws InvalidRequestException {
-        ContractParametersCheckRequest request = Utils.createContractParametersCheckRequest("aMerchant");
-        Assert.assertNotNull(new CreateTransactionPostRequest.Builder().fromCheckRequest(request));
-    }
-
-    @Test(expected = InvalidRequestException.class)
-    public void fromCheckRequestNullRequest() throws InvalidRequestException {
-        new CreateTransactionPostRequest.Builder().fromCheckRequest(null);
-    }
-
-    @Test(expected = InvalidRequestException.class)
-    public void fromCheckRequestNullPartnerConfiguration() throws InvalidRequestException {
-        ContractParametersCheckRequest request = Utils.createContractParametersCheckRequestBuilder("aMerchant")
-                .withPartnerConfiguration(null)
-                .build();
-        new CreateTransactionPostRequest.Builder().fromCheckRequest(request);
-    }
-
-    @Test(expected = InvalidRequestException.class)
-    public void fromCheckRequestNullServiceId() throws InvalidRequestException {
-        PartnerConfiguration partnerConfiguration = new PartnerConfiguration(new HashMap<>(), new HashMap<>());
-        ContractParametersCheckRequest request = Utils.createContractParametersCheckRequestBuilder("aMerchant")
-                .withPartnerConfiguration(partnerConfiguration)
-                .build();
-        new CreateTransactionPostRequest.Builder().fromCheckRequest(request);
+        @Test
+        public void fromCheckRequestNullServiceId() {
+            final PartnerConfiguration partnerConfiguration = new PartnerConfiguration(new HashMap<>(), new HashMap<>());
+            final ContractParametersCheckRequest request = Utils.createContractParametersCheckRequestBuilder("aMerchant")
+                    .withPartnerConfiguration(partnerConfiguration)
+                    .build();
+            assertThrows(InvalidRequestException.class, () -> {
+                new CreateTransactionPostRequest.Builder().fromCheckRequest(request);
+            });
+        }
     }
 
     @Test
@@ -113,6 +137,6 @@ public class CreateTransactionPostRequestTest {
         CreateTransactionPostRequest createTransactionPostRequest = new CreateTransactionPostRequest.Builder().fromCheckRequest(request);
         String body = createTransactionPostRequest.buildBody();
 
-        Assert.assertEquals(bodyToCompare, body);
+        assertEquals(bodyToCompare, body);
     }
 }

@@ -5,8 +5,9 @@ import com.payline.payment.samsung.pay.utils.Utils;
 import com.payline.pmapi.bean.payment.request.PaymentRequest;
 import com.payline.pmapi.bean.payment.response.PaymentResponse;
 import com.payline.pmapi.bean.payment.response.impl.PaymentResponseFormUpdated;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PaymentServiceIT {
     private PaymentServiceImpl service = new PaymentServiceImpl();
@@ -17,6 +18,6 @@ public class PaymentServiceIT {
         PaymentRequest request = Utils.createCompletePaymentBuilder().build();
         PaymentResponse response = service.paymentRequest(request);
 
-        Assert.assertEquals(PaymentResponseFormUpdated.class, response.getClass());
+        assertEquals(PaymentResponseFormUpdated.class, response.getClass());
     }
 }
