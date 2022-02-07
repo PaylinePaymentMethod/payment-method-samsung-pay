@@ -1,11 +1,10 @@
 package com.payline.payment.samsung.pay.exception;
 
 import com.payline.pmapi.bean.common.FailureCause;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PluginExceptionTest {
 
@@ -17,7 +16,7 @@ public class PluginExceptionTest {
     private PluginException exceptionWithMessageAndCause;
     private PluginException exceptionWithMessageAndFailureCauseAndCause;
 
-    @Before
+    @BeforeEach
     public void setup(){
         this.exceptionWithSimpleMessage = new PluginException(LONG_MESSAGE);
         this.exceptionWithMessageAndFailureCause = new PluginException(LONG_MESSAGE, FailureCause.COMMUNICATION_ERROR);

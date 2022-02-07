@@ -1,16 +1,18 @@
 package com.payline.payment.samsung.pay.utils.i18n;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
+
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class I18nServiceTest {
 
     private I18nService service;
 
-    @Before
+    @BeforeEach
     public void setup(){
         this.service = I18nService.getInstance();
     }
@@ -23,11 +25,11 @@ public class I18nServiceTest {
         String frMessage = service.getMessage( "contractConfiguration.keyId.error", new Locale( "fr" ) );
 
         // then: all 3 messages are not null, FR is different then EN, CO equals EN.
-        Assert.assertNotNull( coMessage );
-        Assert.assertNotNull( enMessage );
-        Assert.assertNotNull( frMessage );
-        Assert.assertNotEquals( frMessage, enMessage );
-        Assert.assertNotEquals( enMessage, coMessage );
+        assertNotNull( coMessage );
+        assertNotNull( enMessage );
+        assertNotNull( frMessage );
+        assertNotEquals( frMessage, enMessage );
+        assertNotEquals( enMessage, coMessage );
     }
 
     @Test
@@ -36,7 +38,7 @@ public class I18nServiceTest {
         String message = service.getMessage( "this.key.surely.does.not.exist", Locale.getDefault() );
 
         // then: resulting message is not null
-        Assert.assertNotNull( message );
+        assertNotNull( message );
     }
 
 }

@@ -7,33 +7,32 @@ import com.payline.pmapi.bean.paymentform.response.configuration.PaymentFormConf
 import com.payline.pmapi.bean.paymentform.response.configuration.impl.PaymentFormConfigurationResponseSpecific;
 import com.payline.pmapi.bean.paymentform.response.logo.PaymentFormLogoResponse;
 import com.payline.pmapi.bean.paymentform.response.logo.impl.PaymentFormLogoResponseFile;
-import org.junit.Assert;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Properties;
 
 import static com.payline.payment.samsung.pay.utils.Utils.*;
 import static com.payline.payment.samsung.pay.utils.constants.LogoConstants.LOGO_FILE_NAME;
 import static com.payline.payment.samsung.pay.utils.constants.LogoConstants.LOGO_PROPERTIES;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 
 /**
  * Created by Thales on 27/08/2018.
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class PaymentFormConfigurationServiceImplTest {
 
     @Spy
@@ -51,7 +50,7 @@ public class PaymentFormConfigurationServiceImplTest {
         PaymentFormConfigurationResponse response = service.getPaymentFormConfiguration(createDefaultPaymentFormConfigurationRequest());
 
         // then: returned object is an instance of PaymentFormConfigurationResponseSpecific
-        Assert.assertTrue(response instanceof PaymentFormConfigurationResponseSpecific);
+        assertTrue(response instanceof PaymentFormConfigurationResponseSpecific);
     }
 
     @Test
@@ -60,9 +59,9 @@ public class PaymentFormConfigurationServiceImplTest {
         PaymentFormLogo paymentFormLogo = service.getLogo("", Locale.getDefault());
 
         // then: returned elements are not null
-        Assert.assertNotNull(paymentFormLogo);
-        Assert.assertNotNull(paymentFormLogo.getFile());
-        Assert.assertNotNull(paymentFormLogo.getContentType());
+        assertNotNull(paymentFormLogo);
+        assertNotNull(paymentFormLogo.getFile());
+        assertNotNull(paymentFormLogo.getContentType());
     }
 
     @Test
@@ -102,12 +101,12 @@ public class PaymentFormConfigurationServiceImplTest {
         PaymentFormLogoResponse paymentFormLogoResponse = service.getPaymentFormLogo(request);
 
         // then: returned elements match the image file data
-        Assert.assertTrue(paymentFormLogoResponse instanceof PaymentFormLogoResponseFile);
+        assertTrue(paymentFormLogoResponse instanceof PaymentFormLogoResponseFile);
         PaymentFormLogoResponseFile casted = (PaymentFormLogoResponseFile) paymentFormLogoResponse;
-        Assert.assertEquals(image.getHeight(), casted.getHeight());
-        Assert.assertEquals(image.getWidth(), casted.getWidth());
-        Assert.assertNotNull(casted.getTitle());
-        Assert.assertNotNull(casted.getAlt());
+        assertEquals(image.getHeight(), casted.getHeight());
+        assertEquals(image.getWidth(), casted.getWidth());
+        assertNotNull(casted.getTitle());
+        assertNotNull(casted.getAlt());
     }
 
     @Test
@@ -121,12 +120,12 @@ public class PaymentFormConfigurationServiceImplTest {
                 .build();
 
         doThrow(IOException.class).when(service).getProprities(props);
-        Assertions.assertThrows(PluginException.class, () -> service.getPaymentFormLogo(request));
+        assertThrows(PluginException.class, () -> service.getPaymentFormLogo(request));
     }
 
     @Test
     public void getBufferedImageOK() throws IOException {
-        Assert.assertNotNull(service.getBufferedImage("samsung-pay-logo.png"));
+        assertNotNull(service.getBufferedImage("samsung-pay-logo.png"));
     }
 
     @Test
@@ -139,6 +138,6 @@ public class PaymentFormConfigurationServiceImplTest {
     @Test
     public void getPropritiesOK() throws IOException {
         Properties props =new Properties();
-        Assert.assertEquals(props, service.getProprities(props));
+        assertEquals(props, service.getProprities(props));
     }
 }

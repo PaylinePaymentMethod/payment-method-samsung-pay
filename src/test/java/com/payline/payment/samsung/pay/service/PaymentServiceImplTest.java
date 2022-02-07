@@ -13,22 +13,21 @@ import com.payline.pmapi.bean.payment.response.buyerpaymentidentifier.impl.Email
 import com.payline.pmapi.bean.payment.response.impl.PaymentResponseFailure;
 import com.payline.pmapi.bean.payment.response.impl.PaymentResponseFormUpdated;
 import com.payline.pmapi.bean.payment.response.impl.PaymentResponseSuccess;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 
 import static com.payline.payment.samsung.pay.utils.SamsungPayConstants.PAYMENTDATA_TOKENDATA;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
@@ -36,7 +35,7 @@ import static org.mockito.Mockito.doReturn;
 /**
  * Created by Thales on 27/08/2018.
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class PaymentServiceImplTest {
 
     @Mock
@@ -46,21 +45,14 @@ public class PaymentServiceImplTest {
     @Spy
     private PaymentServiceImpl service;
 
-    @Before
-    public void setup() {
-
-    }
-
     @Test
     public void paymentRequest(){
         PaymentResponse response = PaymentResponseSuccess.PaymentResponseSuccessBuilder.aPaymentResponseSuccess().withTransactionDetails(Email.EmailBuilder.anEmail().withEmail("foo@bar.baz").build()).withPartnerTransactionId("normal").build();
-//        PaymentResponse responseDirect = PaymentResponseSuccess.PaymentResponseSuccessBuilder.aPaymentResponseSuccess().withTransactionDetails(Email.EmailBuilder.anEmail().withEmail("foo@bar.baz").build()).withPartnerTransactionId("direct").build();
         doReturn(response).when(service).processRequest(any());
-//        doReturn(responseDirect).when(service).processDirectRequest(any(), any());
 
         PaymentResponse paymentResponse = service.paymentRequest(Utils.createCompletePaymentBuilder().build());
         PaymentResponseSuccess responseSuccess =  (PaymentResponseSuccess) paymentResponse;
-        Assert.assertEquals("normal", responseSuccess.getPartnerTransactionId());
+        assertEquals("normal", responseSuccess.getPartnerTransactionId());
 
     }
 
@@ -76,7 +68,7 @@ public class PaymentServiceImplTest {
 
         PaymentResponse paymentResponse = service.paymentRequest(request);
         PaymentResponseSuccess responseSuccess =  (PaymentResponseSuccess) paymentResponse;
-        Assert.assertEquals("direct", responseSuccess.getPartnerTransactionId());
+        assertEquals("direct", responseSuccess.getPartnerTransactionId());
     }
 
     @Test
@@ -88,7 +80,7 @@ public class PaymentServiceImplTest {
         Mockito.when(httpClient.doPost(anyString(), anyString(), anyString(), anyString())).thenReturn(response);
         PaymentRequest request = Utils.createCompletePaymentBuilder().build();
         StringResponse httpResponse = service.createSendRequest(request);
-        Assert.assertEquals(content, httpResponse.getContent());
+        assertEquals(content, httpResponse.getContent());
     }
 
     @Test
@@ -107,8 +99,8 @@ public class PaymentServiceImplTest {
         service.setPaymentRequest(Utils.createCompletePaymentBuilder().build());
 
         PaymentResponse paymentResponse = service.processResponse(response);
-        Assert.assertNotNull(paymentResponse);
-        Assert.assertEquals(PaymentResponseFormUpdated.class, paymentResponse.getClass());
+        assertNotNull(paymentResponse);
+        assertEquals(PaymentResponseFormUpdated.class, paymentResponse.getClass());
 
     }
 
@@ -128,9 +120,9 @@ public class PaymentServiceImplTest {
         service.setPaymentRequest(Utils.createCompletePaymentBuilder().build());
 
         PaymentResponse paymentResponse = service.processResponse(response);
-        Assert.assertEquals(PaymentResponseFailure.class, paymentResponse.getClass());
+        assertEquals(PaymentResponseFailure.class, paymentResponse.getClass());
         PaymentResponseFailure responseFailure = (PaymentResponseFailure) paymentResponse;
-        Assertions.assertEquals(FailureCause.INVALID_DATA, responseFailure.getFailureCause());
+        assertEquals(FailureCause.INVALID_DATA, responseFailure.getFailureCause());
 
     }
 
@@ -152,7 +144,7 @@ public class PaymentServiceImplTest {
         PaymentRequest request = Utils.createCompletePaymentBuilder().build();
 
         String connectCall = service.createConnectCall(request, response);
-        Assert.assertEquals(goodConnectCall, connectCall);
+        assertEquals(goodConnectCall, connectCall);
     }
 
     @Test
@@ -162,7 +154,7 @@ public class PaymentServiceImplTest {
         request.getPaymentFormContext().getPaymentFormParameter().put(PAYMENTDATA_TOKENDATA, data);
 
         String refId = service.getRefIdFromRequest(request);
-        Assert.assertEquals("667ae458c01b4d95bdc76af81e3cd11e", refId);
+        assertEquals("667ae458c01b4d95bdc76af81e3cd11e", refId);
 
     }
 }

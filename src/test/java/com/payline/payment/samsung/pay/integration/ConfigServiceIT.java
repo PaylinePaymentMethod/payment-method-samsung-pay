@@ -6,8 +6,7 @@ import com.payline.payment.samsung.pay.utils.SamsungPayConstants;
 import com.payline.payment.samsung.pay.utils.Utils;
 import com.payline.pmapi.bean.configuration.PartnerConfiguration;
 import com.payline.pmapi.bean.configuration.request.ContractParametersCheckRequest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 
 import java.nio.file.Files;
@@ -18,6 +17,8 @@ import java.util.Map;
 import static com.payline.payment.samsung.pay.utils.SamsungPayConstants.CONTRACT_CONFIG_MERCHANT_NAME;
 import static com.payline.payment.samsung.pay.utils.Utils.SANDBOX_URL_API;
 import static com.payline.payment.samsung.pay.utils.Utils.SANDBOX_URL_JS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ConfigServiceIT {
 
@@ -28,15 +29,15 @@ public class ConfigServiceIT {
     public void checkOk() {
         ContractParametersCheckRequest request = Utils.createContractParametersCheckRequest(Utils.MERCHANT_ID);
         Map<String, String> errors = service.check(request);
-        Assert.assertEquals(0, errors.size());
+        assertEquals(0, errors.size());
     }
 
     @Test
     public void checkNoMerchant() {
         ContractParametersCheckRequest request = Utils.createContractParametersCheckRequest(null);
         Map<String, String> errors = service.check(request);
-        Assert.assertEquals(1, errors.size());
-        Assert.assertNotNull(errors.get(CONTRACT_CONFIG_MERCHANT_NAME));
+        assertEquals(1, errors.size());
+        assertNotNull(errors.get(CONTRACT_CONFIG_MERCHANT_NAME));
     }
 
     @Test
@@ -62,6 +63,6 @@ public class ConfigServiceIT {
                 .build();
 
         Map<String, String> errors = service.check(request);
-        Assert.assertEquals(1, errors.size());
+        assertEquals(1, errors.size());
     }
 }
