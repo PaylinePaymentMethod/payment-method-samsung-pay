@@ -34,8 +34,8 @@ public abstract class LogoPaymentFormConfigurationService implements PaymentForm
             return PaymentFormLogoResponseFile.PaymentFormLogoResponseFileBuilder.aPaymentFormLogoResponseFile()
                     .withHeight(Integer.valueOf(props.getProperty(LOGO_HEIGHT)))
                     .withWidth(Integer.valueOf(props.getProperty(LOGO_WIDTH)))
-                    .withTitle(i18nservice.getMessage(props.getProperty(LOGO_TITLE), paymentFormLogoRequest.getLocale()))
-                    .withAlt(i18nservice.getMessage(props.getProperty(LOGO_ALT), paymentFormLogoRequest.getLocale()))
+                    .withTitle(props.getProperty(LOGO_TITLE))
+                    .withAlt(props.getProperty(LOGO_ALT))
                     .build();
         } catch (IOException e) {
             LOGGER.error("An error occurred reading the file logo.properties", e);
