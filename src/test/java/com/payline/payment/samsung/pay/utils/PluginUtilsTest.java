@@ -1,16 +1,17 @@
 package com.payline.payment.samsung.pay.utils;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PluginUtilsTest {
 
     @Test
     public void truncateOk() {
 
-        Assert.assertEquals("", PluginUtils.truncate("foo", 0));
-        Assert.assertEquals("foo", PluginUtils.truncate("foo", 3));
-        Assert.assertEquals("foo", PluginUtils.truncate("foo", 5));
-        Assert.assertEquals("fo", PluginUtils.truncate("foo", 2));
+        assertEquals("", PluginUtils.truncate("foo", 0));
+        assertEquals("foo", PluginUtils.truncate("foo", 3));
+        assertEquals("foo", PluginUtils.truncate("foo", 5));
+        assertEquals("fo", PluginUtils.truncate("foo", 2));
     }
 }

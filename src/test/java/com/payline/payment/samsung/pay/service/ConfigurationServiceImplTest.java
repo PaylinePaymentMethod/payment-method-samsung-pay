@@ -7,12 +7,11 @@ import com.payline.payment.samsung.pay.utils.http.StringResponse;
 import com.payline.pmapi.bean.configuration.ReleaseInformation;
 import com.payline.pmapi.bean.configuration.parameter.AbstractParameter;
 import com.payline.pmapi.bean.configuration.request.ContractParametersCheckRequest;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -23,13 +22,11 @@ import java.util.Map;
 import static com.payline.payment.samsung.pay.utils.SamsungPayConstants.CONTRACT_CONFIG_MERCHANT_NAME;
 import static com.payline.payment.samsung.pay.utils.SamsungPayConstants.HTTP_CREATED;
 import static com.payline.pmapi.bean.configuration.request.ContractParametersCheckRequest.GENERIC_ERROR;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by Thales on 27/08/2018.
- */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ConfigurationServiceImplTest {
     private Locale locale = Locale.FRENCH;
 
@@ -38,24 +35,18 @@ public class ConfigurationServiceImplTest {
 
     @InjectMocks
     private ConfigurationServiceImpl service;
-//
-//    @Before
-//    public void setup(){
-//        httpClient = new SamsungPayHttpClient();
-//    }
-
 
     @Test
     public void getParameters() {
         List<AbstractParameter> parameters = service.getParameters(locale);
-        Assert.assertEquals(7, parameters.size());
+        assertEquals(7, parameters.size());
     }
 
     @Test
     public void getReleaseInformation() {
         ReleaseInformation information = service.getReleaseInformation();
-        Assert.assertFalse("01/01/1900".equals(information.getDate()));
-        Assert.assertFalse("unknown".equals(information.getVersion()));
+        assertFalse("01/01/1900".equals(information.getDate()));
+        assertFalse("unknown".equals(information.getVersion()));
     }
 
     @Test
@@ -74,7 +65,7 @@ public class ConfigurationServiceImplTest {
 
         ContractParametersCheckRequest request = Utils.createContractParametersCheckRequest(Utils.MERCHANT_ID);
         Map<String, String> errors = service.check(request);
-        Assert.assertEquals(0, errors.size());
+        assertEquals(0, errors.size());
     }
 
     @Test
@@ -86,7 +77,7 @@ public class ConfigurationServiceImplTest {
 
         ContractParametersCheckRequest request = Utils.createContractParametersCheckRequest(Utils.MERCHANT_ID);
         Map<String, String> errors = service.check(request);
-        Assert.assertEquals(1, errors.size());
+        assertEquals(1, errors.size());
     }
 
     @Test
@@ -94,8 +85,8 @@ public class ConfigurationServiceImplTest {
         ContractParametersCheckRequest request = Utils.createContractParametersCheckRequest(null);
         Map<String, String> errors = service.check(request);
 
-        Assert.assertEquals(1, errors.size());
-        Assert.assertTrue(errors.containsKey(CONTRACT_CONFIG_MERCHANT_NAME));
+        assertEquals(1, errors.size());
+        assertTrue(errors.containsKey(CONTRACT_CONFIG_MERCHANT_NAME));
     }
 
     @Test
@@ -104,7 +95,7 @@ public class ConfigurationServiceImplTest {
 
         ContractParametersCheckRequest request = Utils.createContractParametersCheckRequest(Utils.MERCHANT_ID);
         Map<String, String> errors = service.check(request);
-        Assert.assertEquals(1, errors.size());
-        Assert.assertTrue(errors.containsKey(GENERIC_ERROR));
+        assertEquals(1, errors.size());
+        assertTrue(errors.containsKey(GENERIC_ERROR));
     }
 }
