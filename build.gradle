@@ -25,7 +25,7 @@ targetCompatibility = 14
 
 description = 'payment-method-samsung-pay'
 group 'com.payline.payment.samsung-pay'
-version '1.4.2'
+version '1.4.3-SNAPSHOT'
 
 compileJava.options.encoding = 'UTF-8'
 
